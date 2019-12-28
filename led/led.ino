@@ -13,9 +13,9 @@
 #define FADE_STEP_SLOW_MILLIS    40
 
 typedef struct {
-  unsigned int red;
-  unsigned int green;
-  unsigned int blue;
+  int red;
+  int green;
+  int blue;
 } color_t;
 
 typedef struct {
@@ -380,7 +380,7 @@ loop(void)
       break;
     case 0xc: // red down
       Global.current.red -= 1;
-      if (Global.current.red > 255) {
+      if (Global.current.red < 0) {
         Global.current.red = 255;
       }
       setColorPrint("Red: ", Global.current.red, Global.current.green, Global.current.blue);
@@ -394,7 +394,7 @@ loop(void)
       break;
     case 0xd: // green down
       Global.current.green -= 1;
-      if (Global.current.green > 255) {
+      if (Global.current.green < 0) {
         Global.current.green = 255;
       }
       setColorPrint("Green: ", Global.current.red, Global.current.green, Global.current.blue);
@@ -408,7 +408,7 @@ loop(void)
       break;
     case 0xe: // blue down
       Global.current.blue -= 1;
-      if (Global.current.blue > 255) {
+      if (Global.current.blue < 0) {
         Global.current.blue = 255;
       }
       setColorPrint("Blue: ", Global.current.red, Global.current.green, Global.current.blue);
