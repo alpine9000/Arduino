@@ -13,9 +13,9 @@
 #define FADE_STEP_SLOW_MILLIS    40
 
 typedef struct {
-  int red;
-  int green;
-  int blue;
+  unsigned int red;
+  unsigned int green;
+  unsigned int blue;
 } color_t;
 
 typedef struct {
@@ -116,15 +116,25 @@ setColor(unsigned int red, unsigned int green, unsigned int blue)
   Global.current.red = red;
   Global.current.green = green;
   Global.current.blue = blue;
-#if 0 
-  Serial.print(red);
-  Serial.print(" ");
-  Serial.print(green);
-  Serial.print(" ");
-  Serial.println(blue);
-#endif
 }
 
+void
+printCurrent(const char* label)
+{  
+  Serial.print(label);
+  Serial.print(Global.current.red);
+  Serial.print(',');
+  Serial.print(Global.current.green);
+  Serial.print(',');
+  Serial.println(Global.current.blue);
+}
+
+void
+setColorPrint(const char* label, unsigned int red, unsigned int green, unsigned int blue)
+{
+  setColor(red, green, blue);
+  printCurrent(label);
+}
 
 int 
 readRemote(void)
@@ -362,46 +372,46 @@ loop(void)
       targetColor(0, 0, 255);
       break;
     case 0x8: // red up
-      Global.current.red += 5;
+      Global.current.red += 1;
       if (Global.current.red > 255) {
         Global.current.red = 0;
       }
-      setColor(Global.current.red, Global.current.green, Global.current.blue);
+      setColorPrint("Red: ", Global.current.red, Global.current.green, Global.current.blue);
       break;
     case 0xc: // red down
-      Global.current.red -= 5;
+      Global.current.red -= 1;
       if (Global.current.red > 255) {
-        Global.current.red = 0;
+        Global.current.red = 255;
       }
-      setColor(Global.current.red, Global.current.green, Global.current.blue);
+      setColorPrint("Red: ", Global.current.red, Global.current.green, Global.current.blue);
       break;
     case 0x9: // green up
-      Global.current.green += 5;
+      Global.current.green += 1;
       if (Global.current.green > 255) {
         Global.current.green = 0;
       }
-      setColor(Global.current.red, Global.current.green, Global.current.blue);
+      setColorPrint("Green: ", Global.current.red, Global.current.green, Global.current.blue);
       break;
     case 0xd: // green down
-      Global.current.green -= 5;
+      Global.current.green -= 1;
       if (Global.current.green > 255) {
-        Global.current.green = 0;
+        Global.current.green = 255;
       }
-      setColor(Global.current.red, Global.current.green, Global.current.blue);
+      setColorPrint("Green: ", Global.current.red, Global.current.green, Global.current.blue);
       break;
     case 0xa: // blue up
-      Global.current.blue += 5;
+      Global.current.blue += 1;
       if (Global.current.blue > 255) {
         Global.current.blue = 0;
       }
-      setColor(Global.current.red, Global.current.green, Global.current.blue);
+      setColorPrint("Blue: ", Global.current.red, Global.current.green, Global.current.blue);
       break;
     case 0xe: // blue down
-      Global.current.blue -= 5;
+      Global.current.blue -= 1;
       if (Global.current.blue > 255) {
-        Global.current.blue = 0;
+        Global.current.blue = 255;
       }
-      setColor(Global.current.red, Global.current.green, Global.current.blue);
+      setColorPrint("Blue: ", Global.current.red, Global.current.green, Global.current.blue);
      break;
     case 0x17:
       reset();
